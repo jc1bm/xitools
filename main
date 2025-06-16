@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Delivery Calculator</title>
+</head>
+<body>
+  <h1>Delivery Calculator</h1>
+  <label>Start Date (B2): <input type="date" id="B2" /></label><br>
+  <label>B3: <input type="number" id="B3" /></label><br>
+  <label>B4: <input type="number" id="B4" /></label><br>
+  <label>B5: <input type="number" id="B5" /></label><br>
+  <label>B6: <input type="number" id="B6" /></label><br>
+  <button onclick="calculate()">Calculate</button>
+
+  <h2>Results</h2>
+  <p>B7 (per day): <span id="B7"></span></p>
+  <p>B8 (Y/N): <span id="B8"></span></p>
+  <div id="extra"></div>
+
+  <script>
+    function calculate() {
+      const B2 = new Date(document.getElementById("B2").value);
+      const B3 = Number(document.getElementById("B3").value);
+      const B4 = Number(document.getElementById("B4").value);
+      const B5 = Number(document.getElementById("B5").value);
+      const B6 = Number(document.getElementById("B6").value);
+
+      const currentDate = new Date();
+      const adjustedB4 = B4 - B5;
+      const daysDifference = Math.floor((currentDate - B2) / (1000 * 60 * 60 * 24)) - 1;
+
+      const B7 = daysDifference !== 0 ? Math.floor((adjustedB4 - B3) / daysDifference) : 0;
+      const B8 = B7 > B6 ? "N" : "Y";
+
+      document.getElementById("B7").innerText = B7;
+      document.getElementById("B8").innerText = B8;
+
+      const extra = document.getElementById("extra");
+      extra.innerHTML = "";
+
+      if (B8 === "N") {
+        const B9 = Math.abs(daysDifference);
+        const B10 = (B9 * B6) + adjustedB4;
+        const B11 = ((B10 / B3) * 100).toFixed(2) + "%";
+        const B12 = B3 - B10;
+        const B13 = Math.ceil(B12 / B6);
+        const B14 = new Date(B2);
+        B14.setDate(B14.getDate() + B13);
+
+        extra.innerHTML = `
+          <p>B9 (Days): ${B9}</p>
+          <p>B10: ${B10}</p>
+          <p>B11 (%): ${B11}</p>
+          <p>B12: ${B12}</p>
+          <p>B13 (Days Needed): ${B13}</p>
+          <p>B14 (Target Date): ${B14.toISOString().split('T')[0]}</p>
+        `;
+      }
+    }
+  </script>
+</body>
+</html>
