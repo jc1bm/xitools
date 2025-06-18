@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8" />
   <title>Delivery Calculator</title>
 </head>
 <body>
@@ -9,7 +10,7 @@
   <label>B3: <input type="number" id="B3" /></label><br>
   <label>B4: <input type="number" id="B4" /></label><br>
   <label>B5: <input type="number" id="B5" /></label><br>
-  <label>B6: <input type="number" id="B6" /></label><br>
+  <label>B6: <input type="number" id="B6" /></label><br><br>
   <button onclick="calculate()">Calculate</button>
 
   <h2>Results</h2>
@@ -19,13 +20,20 @@
 
   <script>
     function calculate() {
-      const B2 = new Date(document.getElementById("B2").value);
+      const dateStr = document.getElementById("B2").value;
       const B3 = Number(document.getElementById("B3").value);
       const B4 = Number(document.getElementById("B4").value);
       const B5 = Number(document.getElementById("B5").value);
       const B6 = Number(document.getElementById("B6").value);
 
+      if (!dateStr || isNaN(B3) || isNaN(B4) || isNaN(B5) || isNaN(B6)) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      const B2 = new Date(dateStr);
       const currentDate = new Date();
+
       const adjustedB4 = B4 - B5;
       const daysDifference = Math.floor((currentDate - B2) / (1000 * 60 * 60 * 24)) - 1;
 
